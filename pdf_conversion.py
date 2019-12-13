@@ -22,7 +22,7 @@ def file_size(filePath):
             
 #------------------------#
 
-#---PDF conversion (using pdfbox)
+# Driver script
 def pdf_converter(dirName):
     
     # Set directory path and collect file names
