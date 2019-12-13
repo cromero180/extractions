@@ -1,3 +1,3 @@
 # extractions
 
-Generalized functions for performing various scraping and text extraction tasks.
+Generalized functions for performing various text scraping and conversion tasks.
