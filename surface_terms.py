@@ -52,16 +52,6 @@ def extract_sections(corpus = '', search_term = '', start_tag = '', end_tag = ''
     # Pull header
     match = re.search('<b>(.*?)\n', sub, re.DOTALL)
     header = match.group(0)
-
-    # Clean up text
-#     sub = remove_html_tags(sub)
-#     sub = remove_line_breaks(sub)
-#     sub = remove_trailing_chars(sub)    
-    
-#     header = remove_html_tags(header)
-#     header = remove_line_breaks(header)
-    # Remove trailing spaces
-#     header = header.strip()
     
     return sub, header, end
 
@@ -128,8 +118,17 @@ for s in range(sec_cnt):
                                         end_tag = end_tag, 
                                         final_tag = final_tag)
     
-    # Update results
-    secs.append(sub)
+    # Clean up section/header
+    sec = sub
+    sec = remove_html_tags(sec)
+    sec = remove_line_breaks(sec)
+    sec = remove_trailing_chars(sec)   
+    
+    header = remove_html_tags(header)
+    header = remove_line_breaks(header)
+    
+    # Update secs and headers results
+    secs.append(sec)
     headers.append(header)
     
     # Tally relevant returns of search term
@@ -145,13 +144,17 @@ for s in range(sec_cnt):
                                 final_sent_tag = final_sent_tag,
                                 final_sent_tag_1 = final_sent_tag_1)
         
+        # Clean up sentence
+        sentence = remove_html_tags(sentence)
+        sentence = remove_line_breaks(sentence)
+        
         # Update sent results
         sents.append(sentence)
         
-        # Reset starting point
+        # Reset sentence point
         sub = sub[sent_end-5:]
         t += 1
     
-    # Reset starting point
+    # Reset section starting point
     raw = raw[end-9:]
     s += 1
