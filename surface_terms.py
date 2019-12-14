@@ -54,12 +54,12 @@ def extract_sections(corpus = '', search_term = '', start_tag = '', end_tag = ''
     header = match.group(0)
 
     # Clean up text
-    sub = remove_html_tags(sub)
-    sub = remove_line_breaks(sub)
-    sub = remove_trailing_chars(sub)    
+#     sub = remove_html_tags(sub)
+#     sub = remove_line_breaks(sub)
+#     sub = remove_trailing_chars(sub)    
     
-    header = remove_html_tags(header)
-    header = remove_line_breaks(header)
+#     header = remove_html_tags(header)
+#     header = remove_line_breaks(header)
     # Remove trailing spaces
 #     header = header.strip()
     
@@ -97,3 +97,61 @@ def extract_sent(corpus = '',
     sent = sent[::-1]
         
     return sent, end
+
+#----Driver Script----#
+
+# Search parameters
+search_term = 'replace'
+start_tag = '\n<p><b>\d'
+end_tag = '\n<p><b>\d'
+final_tag = '\d>b<>p<\n'
+start_sent_tag = '<p>'
+end_sent_tag = '</p>'
+final_sent_tag = '>p/<'
+final_sent_tag_1 = '>p<'
+
+# List to hold results
+secs = []
+headers = []
+sents = []
+
+# Tally relevant returns of section
+sec_cnt = len(re.findall(search_term + '(.*?)' + end_tag, raw, re.DOTALL))
+
+# Loop thru corpus to gather relevant sections
+for s in range(sec_cnt):
+    
+    # Extract section
+    sub, header, end = extract_sections(corpus = raw, 
+                                        search_term = search_term, 
+                                        start_tag = start_tag, 
+                                        end_tag = end_tag, 
+                                        final_tag = final_tag)
+    
+    # Update results
+    secs.append(sub)
+    headers.append(header)
+    
+    # Tally relevant returns of search term
+    term_cnt = len(re.findall(search_term + '(.*?)' + end_sent_tag, sub, re.DOTALL))
+
+    for t in range(term_cnt):
+        
+        # Extract sentence
+        sentence, sent_end = extract_sent(corpus = sub, 
+                                search_term = search_term, 
+                                start_sent_tag = start_sent_tag,
+                                end_sent_tag = end_sent_tag,
+                                final_sent_tag = final_sent_tag,
+                                final_sent_tag_1 = final_sent_tag_1)
+        
+        # Update sent results
+        sents.append(sentence)
+        
+        # Reset starting point
+        sub = sub[sent_end-5:]
+        t += 1
+    
+    # Reset starting point
+    raw = raw[end-9:]
+    s += 1
