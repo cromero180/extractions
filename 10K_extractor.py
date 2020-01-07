@@ -1,3 +1,23 @@
+import re
+import os
+import pandas as pd
+
+"""Surface certain sections from SEC 10-K"""
+
+
+#----Helper Functions----#
+
+def remove_html_tags(text):
+    """Remove html tags from a string"""
+    clean = re.compile('<.*?>')
+    return re.sub(clean, '', text)
+
+def remove_brackets(text):
+    """Remove brackets from a string"""
+    text = re.sub('<','',text)
+    text = re.sub('>','',text)
+    return text
+
 def extract_toc(text, 
     start_tag = 'href=(.*?)><(.*?)>(.*?)risk factors(.*?)</font>', 
                 end_tag = '<a name="' + '(.*?)' + '>'):
@@ -8,7 +28,6 @@ def extract_toc(text,
     toc = match.group(0)
     
     return toc
-    
     
 def extract_toc_links(toc):
     """Stratify table of contents into list of chapters 
@@ -35,7 +54,6 @@ def extract_toc_links(toc):
         s += 1
     
     return chapters
-
 
 def get_bookmark(chapters, chapter):
     """Return bookmark for given chapter based on 
@@ -66,13 +84,11 @@ def get_bookmark(chapters, chapter):
             
     return '<a name="' + pg_link_final
     
-    
 def extract_section(bookmark, end_tag, text):
     """Extract relevant section based on bookmarks"""
     
     match = re.search(bookmark + '(.*?)' + end_tag, text, re.DOTALL)
     return match.group(0)
-    
     
 def get_latest_files(directory):
     """Pull latest file from each sub-directory"""
