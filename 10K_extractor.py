@@ -109,7 +109,7 @@ def get_latest_files(directory):
 
 #----Driver Script----#
 
-directory = "/Users/cesar_romero/Documents/Kaggle/data_challenge/10K"
+directory = "~/Documents/Kaggle/data_challenge/10K"
 
 chap_start = 'business'
 chap_end = 'risk factors'
