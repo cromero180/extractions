@@ -90,7 +90,9 @@ def get_latest_files(directory):
 
     return files
     
-    
+
+#----Driver Script----#
+
 directory = "/Users/cesar_romero/Documents/Kaggle/data_challenge/10K"
 
 chap_start = 'business'
